@@ -10,10 +10,10 @@ export default function TermsOfServicePage() {
       <nav className="bg-white border-b border-gray-200">
         <div className="max-w-6xl mx-auto flex items-center justify-between px-6 py-4">
           <Link href="/" className="flex items-center space-x-2">
-            <div className="w-9 h-9 bg-teal-600 rounded-lg flex items-center justify-center">
+            <div className="w-9 h-9 rounded-lg flex items-center justify-center" style={{ backgroundImage: 'linear-gradient(to right, rgb(226, 52, 43) 0%, rgb(255, 106, 28) 100%)' }}>
               <Sparkles className="w-5 h-5 text-white" />
             </div>
-            <span className="text-xl font-semibold text-gray-900">SmartForms Pro</span>
+            <span className="text-xl font-semibold" style={{ color: '#1c1b1b' }}>FormCraft AI</span>
           </Link>
           <Link
             href="/"
@@ -28,7 +28,7 @@ export default function TermsOfServicePage() {
       <main className="max-w-3xl mx-auto px-6 py-12">
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-8">
           <div className="flex items-center space-x-4 mb-8">
-            <div className="w-14 h-14 bg-teal-600 rounded-lg flex items-center justify-center">
+            <div className="w-14 h-14 rounded-lg flex items-center justify-center" style={{ backgroundImage: 'linear-gradient(to right, rgb(226, 52, 43) 0%, rgb(255, 106, 28) 100%)' }}>
               <FileText className="w-7 h-7 text-white" />
             </div>
             <div>
@@ -41,15 +41,15 @@ export default function TermsOfServicePage() {
             <section>
               <h2 className="text-xl font-semibold text-gray-900 mb-3">1. Agreeing to Our Terms</h2>
               <p>
-                By using SmartForms Pro, you agree to follow these terms. Please read them carefully.
+                By using FormCraft AI, you agree to follow these terms. Please read them carefully.
                 If you don’t agree, you should stop using our service.
               </p>
             </section>
 
             <section>
-              <h2 className="text-xl font-semibold text-gray-900 mb-3">2. Using SmartForms Pro</h2>
+              <h2 className="text-xl font-semibold text-gray-900 mb-3">2. Using FormCraft AI</h2>
               <p className="mb-2">
-                You can use SmartForms Pro to create and manage forms for personal or business use.
+                You can use FormCraft AI to create and manage forms for personal or business use.
                 Please use it responsibly and legally. You should not:
               </p>
               <ul className="list-disc list-inside space-y-1">
@@ -87,7 +87,7 @@ export default function TermsOfServicePage() {
             <section>
               <h2 className="text-xl font-semibold text-gray-900 mb-3">6. Service Updates and Downtime</h2>
               <p>
-                We do our best to keep SmartForms Pro running smoothly. However, we may update, pause,
+                We do our best to keep FormCraft AI running smoothly. However, we may update, pause,
                 or change parts of the service from time to time.
               </p>
             </section>
@@ -95,7 +95,7 @@ export default function TermsOfServicePage() {
             <section>
               <h2 className="text-xl font-semibold text-gray-900 mb-3">7. Limitation of Responsibility</h2>
               <p>
-                SmartForms Pro is provided “as is.” We’re not responsible for any loss or damage that
+                FormCraft AI is provided “as is.” We’re not responsible for any loss or damage that
                 may result from using the service.
               </p>
             </section>
@@ -119,13 +119,15 @@ export default function TermsOfServicePage() {
           <div className="mt-10 pt-6 border-t border-gray-100 flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
             <Link
               href="/privacy"
-              className="text-teal-600 hover:text-teal-700 font-medium transition-colors"
+              className="font-medium transition-colors"
+              style={{ color: 'rgb(226, 52, 43)' }}
             >
               View Privacy Policy →
             </Link>
             <Link
               href="/"
-              className="bg-teal-600 text-white px-5 py-2 rounded-lg font-semibold hover:bg-teal-700 transition-colors"
+              className="text-white px-5 py-2 rounded-lg font-semibold transition-colors"
+              style={{ backgroundImage: 'linear-gradient(to right, rgb(226, 52, 43) 0%, rgb(255, 106, 28) 100%)' }}
             >
               Back to Home
             </Link>

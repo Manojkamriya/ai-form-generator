@@ -10,10 +10,10 @@ export default function PrivacyPolicyPage() {
       <nav className="bg-white border-b border-gray-200">
         <div className="max-w-6xl mx-auto flex items-center justify-between px-6 py-4">
           <Link href="/" className="flex items-center space-x-2">
-            <div className="w-9 h-9 bg-teal-600 rounded-lg flex items-center justify-center">
+            <div className="w-9 h-9 rounded-lg flex items-center justify-center" style={{ backgroundImage: 'linear-gradient(to right, rgb(226, 52, 43) 0%, rgb(255, 106, 28) 100%)' }}>
               <Sparkles className="w-5 h-5 text-white" />
             </div>
-            <span className="text-xl font-semibold text-gray-900">SmartForms Pro</span>
+            <span className="text-xl font-semibold" style={{ color: '#1c1b1b' }}>FormCraft AI</span>
           </Link>
           <Link
             href="/"
@@ -28,29 +28,29 @@ export default function PrivacyPolicyPage() {
       <main className="max-w-3xl mx-auto px-6 py-12">
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-8">
           <div className="flex items-center space-x-4 mb-8">
-            <div className="w-14 h-14 bg-teal-600 rounded-lg flex items-center justify-center">
+            <div className="w-14 h-14 rounded-lg flex items-center justify-center" style={{ backgroundImage: 'linear-gradient(to right, rgb(226, 52, 43) 0%, rgb(255, 106, 28) 100%)' }}>
               <Shield className="w-7 h-7 text-white" />
             </div>
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">Privacy Policy</h1>
+              <h1 className="text-3xl font-bold" style={{ color: '#1c1b1b' }}>Privacy Policy</h1>
               <p className="text-gray-500 text-sm mt-1">Last updated: October 16, 2025</p>
             </div>
           </div>
 
           <div className="space-y-8 text-gray-700 leading-relaxed">
             <section>
-              <h2 className="text-xl font-semibold text-gray-900 mb-3">1. Information We Collect</h2>
+              <h2 className="text-xl font-semibold mb-3" style={{ color: '#1c1b1b' }}>1. Information We Collect</h2>
               <p>
                 We collect the information you share with us when creating an account, using our
                 tools, or contacting us. This can include your name, email, and any forms or content
-                you create through SmartForms Pro.
+                you create through FormCraft AI.
               </p>
             </section>
 
             <section>
-              <h2 className="text-xl font-semibold text-gray-900 mb-3">2. How We Use Your Information</h2>
+              <h2 className="text-xl font-semibold mb-3" style={{ color: '#1c1b1b' }}>2. How We Use Your Information</h2>
               <p className="mb-2">
-                We use your information to make SmartForms Pro work smoothly and safely. This includes:
+                We use your information to make FormCraft AI work smoothly and safely. This includes:
               </p>
               <ul className="list-disc list-inside space-y-1">
                 <li>Providing and improving our services</li>
@@ -62,7 +62,7 @@ export default function PrivacyPolicyPage() {
             </section>
 
             <section>
-              <h2 className="text-xl font-semibold text-gray-900 mb-3">3. Keeping Your Data Safe</h2>
+              <h2 className="text-xl font-semibold mb-3" style={{ color: '#1c1b1b' }}>3. Keeping Your Data Safe</h2>
               <p>
                 We take your privacy seriously. Your form data is encrypted and stored securely. We
                 use modern security measures to prevent unauthorized access, loss, or misuse of your
@@ -71,16 +71,16 @@ export default function PrivacyPolicyPage() {
             </section>
 
             <section>
-              <h2 className="text-xl font-semibold text-gray-900 mb-3">4. Third-Party Services</h2>
+              <h2 className="text-xl font-semibold mb-3" style={{ color: '#1c1b1b' }}>4. Third-Party Services</h2>
               <p>
-                SmartForms Pro uses AI tools and cloud storage to provide certain features. These
+                FormCraft AI uses AI tools and cloud storage to provide certain features. These
                 partners have their own privacy policies, and we recommend reviewing them for more
                 details on how your data is handled.
               </p>
             </section>
 
             <section>
-              <h2 className="text-xl font-semibold text-gray-900 mb-3">5. Your Privacy Choices</h2>
+              <h2 className="text-xl font-semibold mb-3" style={{ color: '#1c1b1b' }}>5. Your Privacy Choices</h2>
               <p className="mb-2">You have full control over your information. You can:</p>
               <ul className="list-disc list-inside space-y-1">
                 <li>View and download your personal data</li>
@@ -92,7 +92,7 @@ export default function PrivacyPolicyPage() {
             </section>
 
             <section>
-              <h2 className="text-xl font-semibold text-gray-900 mb-3">6. Contact Us</h2>
+              <h2 className="text-xl font-semibold mb-3" style={{ color: '#1c1b1b' }}>6. Contact Us</h2>
               <p>
                 Have questions about your data or our privacy policy? Reach out anytime through our
                 support channels or contact form on the website.
@@ -103,13 +103,15 @@ export default function PrivacyPolicyPage() {
           <div className="mt-10 pt-6 border-t border-gray-100 flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
             <Link
               href="/terms"
-              className="text-teal-600 hover:text-teal-700 font-medium transition-colors"
+              className="font-medium transition-colors"
+              style={{ color: 'rgb(226, 52, 43)' }}
             >
               View Terms of Service →
             </Link>
             <Link
               href="/"
-              className="bg-teal-600 text-white px-5 py-2 rounded-lg font-semibold hover:bg-teal-700 transition-colors"
+              className="text-white px-5 py-2 rounded-lg font-semibold transition-colors"
+              style={{ backgroundImage: 'linear-gradient(to right, rgb(226, 52, 43) 0%, rgb(255, 106, 28) 100%)' }}
             >
               Back to Home
             </Link>

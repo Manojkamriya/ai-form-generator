@@ -109,7 +109,8 @@ export default function SubmissionsPage() {
           <span className="text-gray-900">{value.substring(0, 100)}...</span>
           <button
             onClick={() => alert(value)}
-            className="ml-2 text-teal-600 hover:text-teal-500 text-sm"
+            className="ml-2 text-sm"
+            style={{ color: 'rgb(226, 52, 43)' }}
           >
             View full
           </button>
@@ -133,7 +134,8 @@ export default function SubmissionsPage() {
               href={fileUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-teal-600 hover:text-teal-500 text-sm flex items-center"
+              className="text-sm flex items-center"
+              style={{ color: 'rgb(226, 52, 43)' }}
             >
               <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" />
@@ -151,8 +153,8 @@ export default function SubmissionsPage() {
       <div className="min-h-screen bg-gray-50 py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-600 mx-auto"></div>
-            <p className="mt-4 text-gray-600">Loading submissions...</p>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 mx-auto" style={{ borderColor: 'rgb(226, 52, 43)' }}></div>
+            <p className="mt-4 text-gray-600">Loading responses...</p>
           </div>
         </div>
       </div>
@@ -178,8 +180,8 @@ export default function SubmissionsPage() {
         <div className="mb-8">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">
-                {formTitle ? `${formTitle} - Submissions` : 'Form Submissions'}
+              <h1 className="text-3xl font-bold" style={{ color: '#1c1b1b' }}>
+                {formTitle ? `${formTitle} - Responses` : 'Form Responses'}
               </h1>
               <p className="mt-2 text-gray-600">
                 View all responses and uploaded files for this form
@@ -187,7 +189,8 @@ export default function SubmissionsPage() {
             </div>
             <Link
               href="/dashboard"
-              className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500"
+              className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2"
+              style={{ '--tw-ring-color': 'rgb(226, 52, 43)' } as React.CSSProperties}
             >
               ← Back to Dashboard
             </Link>
@@ -202,14 +205,14 @@ export default function SubmissionsPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
               </svg>
             </div>
-            <h3 className="text-lg font-medium text-gray-900 mb-2">No submissions yet</h3>
-            <p className="text-gray-600">This form hasn&apos;t received any responses yet.</p>
+            <h3 className="text-lg font-medium text-gray-900 mb-2">No responses yet</h3>
+            <p className="text-gray-600">Begin gathering responses by sharing your form!</p>
           </div>
         ) : (
           <div className="bg-white rounded-lg shadow overflow-hidden">
             <div className="px-6 py-4 border-b border-gray-200">
               <h2 className="text-lg font-medium text-gray-900">
-                {submissions.length} Submission{submissions.length !== 1 ? 's' : ''}
+                {submissions.length} Response{submissions.length !== 1 ? 's' : ''}
               </h2>
             </div>
             

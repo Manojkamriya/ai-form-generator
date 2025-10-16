@@ -23,7 +23,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
       {/* Shared Header / Navbar */}
       <header className="bg-white shadow px-3 py-3 sm:px-4 sm:py-4 sticky top-0 z-10">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
-          <h1 className="text-lg sm:text-xl font-bold text-gray-800">Dashboard</h1>
+          <h1 className="text-lg sm:text-xl font-bold" style={{ color: '#1c1b1b' }}>Control Panel</h1>
           {isLoggedIn && (
             <button
               onClick={handleLogout}

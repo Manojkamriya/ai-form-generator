@@ -44,18 +44,18 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-teal-50 via-white to-emerald-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-50 via-white to-red-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full">
         {/* Card */}
         <div className="bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden">
           {/* Header */}
-          <div className="bg-gradient-to-r from-teal-600 to-emerald-600 px-8 py-6 text-center">
+          <div className="px-8 py-6 text-center" style={{ backgroundImage: 'linear-gradient(to right, rgb(226, 52, 43) 0%, rgb(255, 106, 28) 100%)' }}>
             <div className="mx-auto w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mb-4">
               <LogIn className="w-8 h-8 text-white" />
             </div>
             <h2 className="text-2xl font-bold text-white">Welcome Back</h2>
-            <p className="mt-2 text-teal-100">
-              Sign in to your account to continue
+            <p className="mt-2 text-white/90">
+              Access your account to continue
             </p>
           </div>
           
@@ -91,8 +91,9 @@ export default function LoginPage() {
                     })}
                     type="email"
                     id="email"
-                    className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all duration-200"
-                    placeholder="Enter your email"
+                    className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:border-transparent transition-all duration-200"
+                    style={{ '--tw-ring-color': 'rgb(226, 52, 43)' } as React.CSSProperties}
+                    placeholder="Type your email"
                   />
                 </div>
                 {errors.email && (
@@ -110,8 +111,9 @@ export default function LoginPage() {
                     {...register('password', { required: 'Password is required' })}
                     type="password"
                     id="password"
-                    className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all duration-200"
-                    placeholder="Enter your password"
+                    className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:border-transparent transition-all duration-200"
+                    style={{ '--tw-ring-color': 'rgb(226, 52, 43)' } as React.CSSProperties}
+                    placeholder="Type your password"
                   />
                 </div>
                 {errors.password && (
@@ -122,18 +124,19 @@ export default function LoginPage() {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full bg-gradient-to-r from-teal-600 to-emerald-600 text-white py-3 px-4 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                className="w-full text-white py-3 px-4 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                style={{ backgroundImage: 'linear-gradient(to right, rgb(226, 52, 43) 0%, rgb(255, 106, 28) 100%)' }}
               >
-                {isLoading ? 'Signing In...' : 'Sign In'}
+                {isLoading ? 'Logging In...' : 'Log In'}
               </button>
             </form>
             
             {/* Link to Signup */}
             <div className="mt-6 text-center">
               <p className="text-gray-600">
-                Don&apos;t have an account?{' '}
-                <Link href="/signup" className="font-semibold text-indigo-600 hover:text-indigo-500 transition-colors duration-200">
-                  Create one here
+                Need an account?{' '}
+                <Link href="/signup" className="font-semibold transition-colors duration-200" style={{ color: 'rgb(226, 52, 43)' }}>
+                  Register now
                 </Link>
               </p>
             </div>

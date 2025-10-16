@@ -14,8 +14,8 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "SmartForms Pro | Simplify Form Management",
-  description: "SmartForms Pro helps you create, manage, and analyze forms efficiently with a modern, intuitive interface.",
+  title: "FormCraft AI | Build Forms with Natural Language",
+  description: "FormCraft AI helps you build, manage, and analyze forms effortlessly using AI-powered automation and intelligent design.",
 };
 
 

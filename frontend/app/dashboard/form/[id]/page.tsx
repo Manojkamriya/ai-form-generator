@@ -169,7 +169,8 @@ export default function FormPage() {
             })}
             type={field.type}
             id={fieldName}
-            className="w-full px-4 py-3 border border-gray-200 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all duration-200"
+            className="w-full px-4 py-3 border border-gray-200 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:border-transparent transition-all duration-200"
+            style={{ '--tw-ring-color': 'rgb(226, 52, 43)' } as React.CSSProperties}
             placeholder={`Enter ${field.label.toLowerCase()}`}
           />
         );
@@ -194,7 +195,8 @@ export default function FormPage() {
             })}
             type="number"
             id={fieldName}
-            className="w-full px-4 py-3 border border-gray-200 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all duration-200"
+            className="w-full px-4 py-3 border border-gray-200 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:border-transparent transition-all duration-200"
+            style={{ '--tw-ring-color': 'rgb(226, 52, 43)' } as React.CSSProperties}
             placeholder={`Enter ${field.label.toLowerCase()}`}
           />
         );
@@ -207,7 +209,8 @@ export default function FormPage() {
               id={fieldName}
               multiple
               onChange={(e) => handleFileChange(fieldName, e)}
-              className="w-full px-4 py-3 border border-gray-200 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all duration-200 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-teal-50 file:text-teal-700 hover:file:bg-teal-100"
+              className="w-full px-4 py-3 border border-gray-200 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:border-transparent transition-all duration-200"
+              style={{ '--tw-ring-color': 'rgb(226, 52, 43)' } as React.CSSProperties}
               accept="image/*,.pdf,.doc,.docx,.txt"
             />
             {files[fieldName] && files[fieldName].length > 0 && (
@@ -215,7 +218,8 @@ export default function FormPage() {
                 {files[fieldName].map((file, index) => (
                   <div
                     key={index}
-                    className="flex items-center space-x-2 bg-green-50 text-green-700 px-3 py-2 rounded-lg text-sm"
+                    className="flex items-center space-x-2 px-3 py-2 rounded-lg text-sm"
+                    style={{ backgroundColor: 'rgb(254, 226, 226)', color: 'rgb(226, 52, 43)' }}
                   >
                     <FileText className="w-4 h-4" />
                     <span>{file.name}</span>
@@ -259,7 +263,8 @@ export default function FormPage() {
             })}
             type="text"
             id={fieldName}
-            className="w-full px-4 py-3 border border-gray-200 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all duration-200"
+            className="w-full px-4 py-3 border border-gray-200 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:border-transparent transition-all duration-200"
+            style={{ '--tw-ring-color': 'rgb(226, 52, 43)' } as React.CSSProperties}
             placeholder={`Enter ${field.label.toLowerCase()}`}
           />
         );
@@ -271,7 +276,7 @@ export default function FormPage() {
       <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-8">
         <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-600 mx-auto"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 mx-auto" style={{ borderColor: 'rgb(226, 52, 43)' }}></div>
             <p className="mt-4 text-gray-600">Loading form...</p>
           </div>
         </div>
@@ -306,12 +311,15 @@ export default function FormPage() {
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Form Header */}
         <div className="text-center mb-8">
-          <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-8 mb-6">
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">
+          <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-8 mb-6"
+               style={{ backgroundImage: 'linear-gradient(to right, rgb(226, 52, 43) 0%, rgb(255, 106, 28) 100%)' }}>
+            <h1 className="text-4xl font-bold mb-4"
+                style={{ color: '#1c1b1b' }}>
               {formSchema.title}
             </h1>
             {formSchema.description && (
-              <p className="text-lg text-gray-600 leading-relaxed">
+              <p className="text-lg leading-relaxed"
+                 style={{ color: '#1c1b1b' }}>
                 {formSchema.description}
               </p>
             )}
@@ -337,16 +345,23 @@ export default function FormPage() {
 
         {/* Success Message */}
         {success && (
-          <div className="mb-8 bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-400 text-green-800 px-8 py-6 rounded-2xl shadow-lg animate-pulse">
+          <div className="mb-8 border-2 px-8 py-6 rounded-2xl shadow-lg animate-pulse"
+               style={{ 
+                 backgroundImage: 'linear-gradient(to right, rgb(254, 226, 226) 0%, rgb(255, 237, 213) 100%)',
+                 borderColor: 'rgb(226, 52, 43)',
+                 color: 'rgb(120, 26, 21)'
+               }}>
             <div className="flex flex-col items-center justify-center space-y-4">
-              <div className="bg-green-500 rounded-full p-3">
+              <div className="rounded-full p-3"
+                   style={{ backgroundColor: 'rgb(226, 52, 43)' }}>
                 <CheckCircle className="w-10 h-10 text-white" />
               </div>
               <div className="text-center">
                 <p className="font-bold text-2xl mb-2">
                   ✅ Form Submitted Successfully!
                 </p>
-                <p className="text-base text-green-700">
+                <p className="text-base"
+                   style={{ color: 'rgb(226, 52, 43)' }}>
                   Thank you! Your response has been recorded.
                 </p>
               </div>
@@ -383,10 +398,11 @@ export default function FormPage() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full bg-gradient-to-r from-teal-600 to-emerald-600 text-white py-4 px-6 rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center space-x-3"
+                className="w-full text-white py-4 px-6 rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center space-x-3"
+                style={{ backgroundImage: 'linear-gradient(to right, rgb(226, 52, 43) 0%, rgb(255, 106, 28) 100%)' }}
               >
                 <Send className="w-5 h-5" />
-                <span>{isSubmitting ? 'Submitting...' : 'Submit Form'}</span>
+                <span>{isSubmitting ? 'Sending...' : 'Send Response'}</span>
               </button>
             </div>
           </form>
