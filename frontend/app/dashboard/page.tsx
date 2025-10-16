@@ -1,0 +1,302 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { useForm } from 'react-hook-form';
+import { Plus, Eye, FileText, Calendar, Sparkles, Lightbulb } from 'lucide-react';
+import api from '@/app/utils/api';
+
+interface Form {
+  id: string;
+  title: string;
+  createdAt: string;
+}
+
+interface CreateFormData {
+  prompt: string;
+}
+
+const FORM_EXAMPLES = [
+  {
+    title: 'Newsletter Signup',
+    prompt: 'Create a newsletter signup form with email and name',
+  },
+  {
+    title: 'Event Registration',
+    prompt: 'Create an event registration form with full name, email, phone, number of attendees (1-10), dietary requirements (textarea), and photo ID upload',
+  },
+  {
+    title: 'Product Inquiry',
+    prompt: 'Create a product inquiry form with product name, quantity (number), customer email, message, and product image upload',
+  },
+];
+
+export default function DashboardPage() {
+  const [forms, setForms] = useState<Form[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isCreating, setIsCreating] = useState(false);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setValue,
+    formState: { errors },
+  } = useForm<CreateFormData>();
+  
+  const [showExamples, setShowExamples] = useState(false);
+
+  // Check authentication and fetch user's forms
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      // No token, redirect to login
+      window.location.href = '/login';
+      return;
+    }
+    
+    fetchForms();
+  }, []);
+
+  const fetchForms = async () => {
+    try {
+      setIsLoading(true);
+      const response = await api.get('/form');
+      setForms(response.data.forms);
+    } catch (err: unknown) {
+      const error = err as { response?: { data?: { message?: string }, status?: number } };
+      
+      if (error.response?.status === 401) {
+        // Token is invalid, redirect to login
+        localStorage.removeItem('token');
+        window.location.href = '/login';
+        return;
+      }
+      
+      setError(error.response?.data?.message || 'Failed to fetch forms');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const onCreateForm = async (data: CreateFormData) => {
+    try {
+      setIsCreating(true);
+      setError('');
+      setSuccess('');
+      
+      const response = await api.post('/form/generate', { prompt: data.prompt });
+      const newForm = response.data.form;
+      
+      // Add new form to the list
+      setForms(prevForms => [newForm, ...prevForms]);
+      
+      // Reset form and show success message
+      reset();
+      setSuccess('Form created successfully!');
+      
+      // Clear success message after 3 seconds
+      setTimeout(() => setSuccess(''), 3000);
+    } catch (err: unknown) {
+      const error = err as { response?: { data?: { message?: string } } };
+      setError(error.response?.data?.message || 'Failed to create form');
+    } finally {
+      setIsCreating(false);
+    }
+  };
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+    });
+  };
+
+  const handleExampleClick = (prompt: string) => {
+    setValue('prompt', prompt);
+    setShowExamples(false);
+  };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-600 mx-auto"></div>
+            <p className="mt-4 text-gray-600">Loading your forms...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-4 sm:py-8">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
+        {/* Header */}
+        <div className="mb-6 sm:mb-8">
+          <div className="flex flex-col sm:flex-row sm:items-center space-y-3 sm:space-y-0 sm:space-x-3 mb-4">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-teal-600 to-emerald-600 rounded-xl flex items-center justify-center flex-shrink-0">
+              <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900">Dashboard</h1>
+              <p className="text-sm sm:text-base lg:text-lg text-gray-600 mt-1">Manage your AI-generated forms and view submissions</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Create New Form Section */}
+        <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-4 sm:p-6 lg:p-8 mb-6 sm:mb-8">
+          <div className="flex items-center space-x-3 mb-4 sm:mb-6">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-r from-green-500 to-emerald-600 rounded-xl flex items-center justify-center flex-shrink-0">
+              <Plus className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+            </div>
+            <h2 className="text-xl sm:text-2xl font-bold text-gray-900">Create New Form</h2>
+          </div>
+          
+          {error && (
+            <div className="mb-4 sm:mb-6 bg-red-50 border border-red-200 text-red-700 px-3 sm:px-4 py-2 sm:py-3 rounded-xl text-xs sm:text-sm">
+              {error}
+            </div>
+          )}
+          
+          {success && (
+            <div className="mb-4 sm:mb-6 bg-green-50 border border-green-200 text-green-700 px-3 sm:px-4 py-2 sm:py-3 rounded-xl text-xs sm:text-sm">
+              {success}
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit(onCreateForm)} className="space-y-4 sm:space-y-6">
+            <div>
+              <div className="flex items-center justify-between mb-2 sm:mb-3">
+                <label htmlFor="prompt" className="block text-sm font-semibold text-gray-700">
+                  Describe the form you want to create
+                </label>
+                <button
+                  type="button"
+                  onClick={() => setShowExamples(!showExamples)}
+                  className="inline-flex items-center space-x-1 text-xs sm:text-sm text-teal-600 hover:text-teal-700 font-medium transition-colors"
+                >
+                  <Lightbulb className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                  <span>{showExamples ? 'Hide' : 'Show'} Examples</span>
+                </button>
+              </div>
+              
+              {showExamples && (
+                <div className="mb-3 sm:mb-4 p-3 sm:p-4 bg-teal-50 border border-teal-200 rounded-xl">
+                  <p className="text-xs sm:text-sm font-medium text-teal-900 mb-2 sm:mb-3">Click an example to use it:</p>
+                  <div className="space-y-2">
+                    {FORM_EXAMPLES.map((example, index) => (
+                      <button
+                        key={index}
+                        type="button"
+                        onClick={() => handleExampleClick(example.prompt)}
+                        className="w-full text-left px-3 py-2 bg-white hover:bg-teal-100 border border-teal-300 hover:border-teal-400 rounded-lg transition-all duration-200 group"
+                      >
+                        <p className="text-xs sm:text-sm font-semibold text-teal-900 mb-1">{example.title}</p>
+                        <p className="text-xs text-teal-700 group-hover:text-teal-900">{example.prompt}</p>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+              
+              <textarea
+                {...register('prompt', { 
+                  required: 'Please describe the form you want to create',
+                  minLength: {
+                    value: 10,
+                    message: 'Description must be at least 10 characters'
+                  }
+                })}
+                id="prompt"
+                rows={3}
+                className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-200 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all duration-200 resize-none text-sm sm:text-base"
+                placeholder="e.g., Create a contact form with fields for name, email, phone number, and message"
+              />
+              {errors.prompt && (
+                <p className="mt-2 text-xs sm:text-sm text-red-600">{errors.prompt.message}</p>
+              )}
+            </div>
+            
+            <button
+              type="submit"
+              disabled={isCreating}
+              className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 bg-gradient-to-r from-green-500 to-emerald-600 text-white px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none text-sm sm:text-base"
+            >
+              <Plus className="w-4 h-4 sm:w-5 sm:h-5" />
+              <span>{isCreating ? 'Creating...' : 'Create Form'}</span>
+            </button>
+          </form>
+        </div>
+
+        {/* Forms Grid */}
+        <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+          <div className="px-4 sm:px-6 lg:px-8 py-4 sm:py-6 border-b border-gray-100">
+            <div className="flex items-center space-x-2 sm:space-x-3">
+              <div className="w-7 h-7 sm:w-8 sm:h-8 bg-gradient-to-r from-teal-500 to-emerald-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                <FileText className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white" />
+              </div>
+              <h2 className="text-lg sm:text-xl font-bold text-gray-900">Your Forms</h2>
+              <span className="bg-gray-100 text-gray-600 px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-xs sm:text-sm font-medium">
+                {forms.length}
+              </span>
+            </div>
+          </div>
+          
+          {forms.length === 0 ? (
+            <div className="px-4 sm:px-8 py-12 sm:py-16 text-center">
+              <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6">
+                <FileText className="w-10 h-10 sm:w-12 sm:h-12 text-gray-400" />
+              </div>
+              <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2">No forms yet</h3>
+              <p className="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6">Create your first form using the prompt above!</p>
+              <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-r from-teal-500 to-emerald-600 rounded-full flex items-center justify-center mx-auto">
+                <Sparkles className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
+              </div>
+            </div>
+          ) : (
+            <div className="p-4 sm:p-6 lg:p-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                {forms.map((form) => (
+                  <div key={form.id} className="bg-gray-50 rounded-xl p-4 sm:p-6 hover:bg-gray-100 transition-all duration-200 border border-gray-200 hover:border-gray-300 hover:shadow-md">
+                    <div className="flex items-start justify-between mb-4">
+                      <div className="flex-1 min-w-0">
+                        <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-2 line-clamp-2 break-words">{form.title}</h3>
+                        <div className="flex items-center space-x-2 text-xs sm:text-sm text-gray-500">
+                          <Calendar className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0" />
+                          <span className="truncate">{formatDate(form.createdAt)}</span>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
+                      <Link
+                        href={`/dashboard/form/${form.id}`}
+                        className="flex-1 inline-flex items-center justify-center space-x-1.5 sm:space-x-2 px-3 sm:px-4 py-2 bg-white border border-gray-300 rounded-lg text-xs sm:text-sm font-medium text-gray-700 hover:bg-gray-50 hover:border-gray-400 transition-all duration-200"
+                      >
+                        <Eye className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                        <span>View Form</span>
+                      </Link>
+                      <Link
+                        href={`/dashboard/form/${form.id}/submission`}
+                        className="flex-1 inline-flex items-center justify-center space-x-1.5 sm:space-x-2 px-3 sm:px-4 py-2 bg-gradient-to-r from-teal-600 to-emerald-600 text-white rounded-lg text-xs sm:text-sm font-medium hover:from-teal-700 hover:to-emerald-700 transform hover:-translate-y-0.5 transition-all duration-200"
+                      >
+                        <FileText className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                        <span>Submissions</span>
+                      </Link>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
