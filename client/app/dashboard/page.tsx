@@ -291,7 +291,7 @@ export default function DashboardPage() {
                       <Link
                         href={`/dashboard/form/${form.id}`}
                         className="flex-1 inline-flex items-center justify-center space-x-1.5 sm:space-x-2 px-3 sm:px-4 py-2 bg-white border border-gray-300 rounded-lg text-xs sm:text-sm font-medium text-gray-700 hover:bg-gray-50 hover:border-gray-400 transition-all duration-200"
-                      >
+                       style={{ fontSize: "0.675rem" }}>
                         <Eye className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                         <span>View Form</span>
                       </Link>
@@ -301,7 +301,7 @@ export default function DashboardPage() {
                         style={{ backgroundImage: 'linear-gradient(to right, rgb(226, 52, 43) 0%, rgb(255, 106, 28) 100%)' }}
                       >
                         <FileText className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                        <span>Check Responses</span>
+                        <span  style={{ fontSize: "0.675rem" }}>Check Responses</span>
                       </Link>
                     </div>
                   </div>

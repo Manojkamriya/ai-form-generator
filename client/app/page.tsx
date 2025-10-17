@@ -4,7 +4,10 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import "./globals.css";
-import { Sparkles, FileText, Zap, Shield, Users, ArrowRight, LogOut } from 'lucide-react';
+import HeroSection from "@/components/FeatureSection";
+import StatsSection from '@/components/StatsSection';
+import { Sparkles, FileText, Zap, Shield, Users, ArrowRight, LogOut,Send } from 'lucide-react';
+import FeaturesSection from '@/components/FeatureSection';
 
 export default function HomePage() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -64,7 +67,14 @@ export default function HomePage() {
       </nav>
 
       {/* Hero Section */}
-      <div className="px-6 py-16 lg:pt-12 lg:pb-24">
+      <div
+  className="px-6 py-16 lg:pt-12 lg:pb-24 relative"
+  style={{
+    backgroundImage: "url('/bg-technology1.png')",
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    backgroundRepeat: "no-repeat",
+  }} >
         <div className="max-w-7xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             {/* Left Column - Text Content */}
@@ -85,11 +95,14 @@ export default function HomePage() {
               </p>
             
           <div className="flex flex-col sm:flex-row items-center lg:items-start space-y-4 sm:space-y-0 sm:space-x-4 mb-8">
-            <button
-              onClick={() => router.push(isLoggedIn ? '/dashboard' : '/signup')}
-              className="text-white px-8 py-4 rounded-xl font-semibold text-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-200 flex items-center space-x-2"
-              style={{ backgroundImage: 'linear-gradient(to right, rgb(226, 52, 43) 0%, rgb(255, 106, 28) 100%)' }}
-            >
+       <button
+  onClick={() => router.push(isLoggedIn ? '/dashboard' : '/signup')}
+  className="text-white px-8 py-4 font-semibold text-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-200 flex items-center space-x-2 rounded-[2rem]"
+  style={{ backgroundImage: 'linear-gradient(to right, rgb(226, 52, 43) 0%, rgb(255, 106, 28) 100%)' }}
+>
+ 
+
+
               <span>Begin Building Now</span>
               <ArrowRight className="w-5 h-5" />
             </button>
@@ -162,168 +175,231 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* How It Works Section */}
-      <div className="px-6 py-20 bg-gradient-to-br from-gray-50 to-white">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-4" style={{ color: '#1c1b1b' }}>
-              Simple Process
-            </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Build professional forms in just three steps
-            </p>
+  <StatsSection/>
+
+    <div className="relative px-4 py-12 md:py-20 bg-gradient-to-br from-gray-50 via-orange-50 to-red-50 overflow-hidden">
+      {/* Decorative background elements */}
+      <div className="absolute top-10 left-10 w-32 h-32 bg-orange-200 rounded-full opacity-20 blur-3xl"></div>
+      <div className="absolute bottom-10 right-10 w-40 h-40 bg-red-200 rounded-full opacity-20 blur-3xl"></div>
+      
+      <div className="max-w-6xl mx-auto relative">
+        {/* Heading */}
+        <div className="text-center mb-12 md:mb-20">
+          <div className="inline-block mb-4">
+            <span className="text-sm font-semibold px-4 py-2 rounded-full bg-gradient-to-r from-red-500 to-orange-500 text-white shadow-lg">
+              HOW IT WORKS
+            </span>
           </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="relative">
-              <div className="bg-white rounded-2xl p-8 shadow-lg border border-gray-100 h-full">
-                <div className="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-xl mb-6" style={{ backgroundImage: 'linear-gradient(to right, rgb(226, 52, 43) 0%, rgb(255, 106, 28) 100%)' }}>
-                  1
+          <h2 className="text-3xl md:text-5xl font-bold mb-4 text-gray-900">
+            Simple Process
+          </h2>
+          <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto">
+            Build professional forms in just three simple steps
+          </p>
+        </div>
+
+        {/* Mobile View - Vertical */}
+        <div className="md:hidden space-y-8">
+          {/* Step 1 */}
+          <div className="relative">
+            <div className="flex items-start gap-4">
+              <div className="flex-shrink-0">
+                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-red-500 to-orange-500 flex items-center justify-center text-white shadow-lg">
+                  <FileText className="w-8 h-8" />
                 </div>
-                <h3 className="text-2xl font-semibold mb-4" style={{ color: '#1c1b1b' }}>Explain Your Needs</h3>
-                <p className="text-gray-600">
-                  Just write what you want in everyday language. Our AI comprehends your needs instantly.
-                </p>
+                <div className="w-1 h-24 bg-gradient-to-b from-red-500 to-orange-400 mx-auto mt-2"></div>
+              </div>
+              <div className="flex-1 pt-2">
+                <div className="bg-white rounded-2xl p-6 shadow-xl border-2 border-orange-100">
+                  <div className="text-sm font-bold text-orange-500 mb-2">STEP 01</div>
+                  <h3 className="text-xl font-bold mb-3 text-gray-900">
+                    Explain Your Needs
+                  </h3>
+                  <p className="text-gray-600 leading-relaxed">
+                    Write what you want in plain language. Our AI understands your intent instantly.
+                  </p>
+                </div>
               </div>
             </div>
-            
-            <div className="relative">
-              <div className="bg-white rounded-2xl p-8 shadow-lg border border-gray-100 h-full">
-                <div className="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-xl mb-6" style={{ backgroundImage: 'linear-gradient(to right, rgb(226, 52, 43) 0%, rgb(255, 106, 28) 100%)' }}>
-                  2
+          </div>
+
+          {/* Step 2 */}
+          <div className="relative">
+            <div className="flex items-start gap-4">
+              <div className="flex-shrink-0">
+                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-orange-500 to-yellow-500 flex items-center justify-center text-white shadow-lg">
+                  <Sparkles className="w-8 h-8" />
                 </div>
-                <h3 className="text-2xl font-semibold mb-4" style={{ color: '#1c1b1b' }}>AI Generates Form</h3>
-                <p className="text-gray-600">
-                  See AI craft your form with intelligent field types, validation logic, and clean structure.
-                </p>
+                <div className="w-1 h-24 bg-gradient-to-b from-orange-400 to-orange-500 mx-auto mt-2"></div>
+              </div>
+              <div className="flex-1 pt-2">
+                <div className="bg-white rounded-2xl p-6 shadow-xl border-2 border-orange-100">
+                  <div className="text-sm font-bold text-orange-500 mb-2">STEP 02</div>
+                  <h3 className="text-xl font-bold mb-3 text-gray-900">
+                    AI Generates Form
+                  </h3>
+                  <p className="text-gray-600 leading-relaxed">
+                    Watch AI create a ready-to-use form with smart field types and validation logic.
+                  </p>
+                </div>
               </div>
             </div>
-            
-            <div className="relative">
-              <div className="bg-white rounded-2xl p-8 shadow-lg border border-gray-100 h-full">
-                <div className="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-xl mb-6" style={{ backgroundImage: 'linear-gradient(to right, rgb(226, 52, 43) 0%, rgb(255, 106, 28) 100%)' }}>
-                  3
+          </div>
+
+          {/* Step 3 */}
+          <div className="relative">
+            <div className="flex items-start gap-4">
+              <div className="flex-shrink-0">
+                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-red-500 to-orange-500 flex items-center justify-center text-white shadow-lg">
+                  <Send className="w-8 h-8" />
                 </div>
-                <h3 className="text-2xl font-semibold mb-4" style={{ color: '#1c1b1b' }}>Publish & Gather</h3>
-                <p className="text-gray-600">
-                  Deploy your form right away, gather responses, and organize submissions effortlessly.
-                </p>
+              </div>
+              <div className="flex-1 pt-2">
+                <div className="bg-white rounded-2xl p-6 shadow-xl border-2 border-orange-100">
+                  <div className="text-sm font-bold text-orange-500 mb-2">STEP 03</div>
+                  <h3 className="text-xl font-bold mb-3 text-gray-900">
+                    Publish & Gather
+                  </h3>
+                  <p className="text-gray-600 leading-relaxed">
+                    Deploy instantly, collect responses, and organize submissions effortlessly.
+                  </p>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
 
+        {/* Desktop View - Horizontal */}
+        <div className="hidden md:block relative">
+          {/* Connecting Path */}
+          <svg className="absolute top-24 left-0 w-full h-32" style={{ zIndex: 0 }}>
+            <defs>
+              <linearGradient id="pathGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" style={{ stopColor: 'rgb(239, 68, 68)', stopOpacity: 1 }} />
+                <stop offset="50%" style={{ stopColor: 'rgb(249, 115, 22)', stopOpacity: 1 }} />
+                <stop offset="100%" style={{ stopColor: 'rgb(239, 68, 68)', stopOpacity: 1 }} />
+              </linearGradient>
+            </defs>
+            <path
+              d="M 100 60 Q 300 20, 500 60 T 900 60"
+              stroke="url(#pathGradient)"
+              strokeWidth="3"
+              fill="none"
+              strokeDasharray="8 8"
+            />
+          </svg>
+
+          <div className="grid grid-cols-3 gap-8 relative" style={{ zIndex: 1 }}>
+            {/* Step 1 */}
+            <div className="group">
+              <div className="bg-white rounded-3xl p-8 shadow-2xl border-2 border-orange-100 hover:border-orange-300 transition-all duration-300 hover:-translate-y-2 h-full">
+                <div className="text-center">
+                  <div className="w-20 h-20 mx-auto rounded-2xl bg-gradient-to-br from-red-500 to-orange-500 flex items-center justify-center text-white shadow-lg mb-6 group-hover:scale-110 transition-transform">
+                    <FileText className="w-10 h-10" />
+                  </div>
+                  <div className="inline-block text-xs font-bold text-white px-3 py-1 rounded-full bg-gradient-to-r from-red-500 to-orange-500 mb-4">
+                    STEP 01
+                  </div>
+                  <h3 className="text-2xl font-bold mb-4 text-gray-900">
+                    Explain Your Needs
+                  </h3>
+                  <p className="text-gray-600 leading-relaxed">
+                    Write what you want in plain language. Our AI understands your intent instantly.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Step 2 */}
+            <div className="group">
+              <div className="bg-white rounded-3xl p-8 shadow-2xl border-2 border-orange-100 hover:border-orange-300 transition-all duration-300 hover:-translate-y-2 h-full">
+                <div className="text-center">
+                  <div className="w-20 h-20 mx-auto rounded-2xl bg-gradient-to-br from-orange-500 to-yellow-500 flex items-center justify-center text-white shadow-lg mb-6 group-hover:scale-110 transition-transform">
+                    <Sparkles className="w-10 h-10" />
+                  </div>
+                  <div className="inline-block text-xs font-bold text-white px-3 py-1 rounded-full bg-gradient-to-r from-orange-500 to-yellow-500 mb-4">
+                    STEP 02
+                  </div>
+                  <h3 className="text-2xl font-bold mb-4 text-gray-900">
+                    AI Generates Form
+                  </h3>
+                  <p className="text-gray-600 leading-relaxed">
+                    Watch AI create a ready-to-use form with smart field types and validation logic.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Step 3 */}
+            <div className="group">
+              <div className="bg-white rounded-3xl p-8 shadow-2xl border-2 border-orange-100 hover:border-orange-300 transition-all duration-300 hover:-translate-y-2 h-full">
+                <div className="text-center">
+                  <div className="w-20 h-20 mx-auto rounded-2xl bg-gradient-to-br from-red-500 to-orange-500 flex items-center justify-center text-white shadow-lg mb-6 group-hover:scale-110 transition-transform">
+                    <Send className="w-10 h-10" />
+                  </div>
+                  <div className="inline-block text-xs font-bold text-white px-3 py-1 rounded-full bg-gradient-to-r from-red-500 to-orange-500 mb-4">
+                    STEP 03
+                  </div>
+                  <h3 className="text-2xl font-bold mb-4 text-gray-900">
+                    Publish & Gather
+                  </h3>
+                  <p className="text-gray-600 leading-relaxed">
+                    Deploy instantly, collect responses, and organize submissions effortlessly.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom CTA */}
+        <div className="text-center mt-12 md:mt-16">
+          <div className="inline-flex items-center gap-2 text-sm text-gray-500">
+            <div className="w-8 h-0.5 bg-gradient-to-r from-transparent to-orange-400"></div>
+            <span className="font-medium">Start building in minutes</span>
+            <div className="w-8 h-0.5 bg-gradient-to-l from-transparent to-red-400"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
       {/* Features Section */}
-      <div className="px-6 py-20 bg-white">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-4" style={{ color: '#1c1b1b' }}>
-              Why Choose FormCraft AI?
-            </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Revolutionize your form creation with AI-driven automation and smart design.
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {/* Feature 1 */}
-            <div className="text-center p-8 rounded-2xl bg-gradient-to-br from-orange-50 to-red-50 border border-orange-100">
-              <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6" style={{ backgroundImage: 'linear-gradient(to right, rgb(226, 52, 43) 0%, rgb(255, 106, 28) 100%)' }}>
-                <Sparkles className="w-8 h-8 text-white" />
-              </div>
-              <h3 className="text-xl font-semibold mb-4" style={{ color: '#1c1b1b' }}>Intelligent Form Creation</h3>
-              <p className="text-gray-600">
-                Describe your needs in everyday words and witness AI build the ideal form layout with proper fields and validation rules.
-              </p>
-            </div>
-
-            {/* Feature 2 */}
-            <div className="text-center p-8 rounded-2xl bg-gradient-to-br from-orange-50 to-red-50 border border-orange-100">
-              <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6" style={{ backgroundImage: 'linear-gradient(to right, rgb(226, 52, 43) 0%, rgb(255, 106, 28) 100%)' }}>
-                <Zap className="w-8 h-8 text-white" />
-              </div>
-              <h3 className="text-xl font-semibold mb-4" style={{ color: '#1c1b1b' }}>Blazing Speed</h3>
-              <p className="text-gray-600">
-                Create sophisticated forms instantly instead of spending hours. Our AI grasps context and delivers forms matching your precise needs.
-              </p>
-            </div>
-
-            {/* Feature 3 */}
-            <div className="text-center p-8 rounded-2xl bg-gradient-to-br from-orange-50 to-red-50 border border-orange-100">
-              <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6" style={{ backgroundImage: 'linear-gradient(to right, rgb(226, 52, 43) 0%, rgb(255, 106, 28) 100%)' }}>
-                <FileText className="w-8 h-8 text-white" />
-              </div>
-              <h3 className="text-xl font-semibold mb-4" style={{ color: '#1c1b1b' }}>Intelligent Field Detection</h3>
-              <p className="text-gray-600">
-                Automatically identifies appropriate field types, applies validation logic, and recommends optimal input formats for each data point.
-              </p>
-            </div>
-
-            {/* Feature 4 */}
-            <div className="text-center p-8 rounded-2xl bg-gradient-to-br from-orange-50 to-red-50 border border-orange-100">
-              <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6" style={{ backgroundImage: 'linear-gradient(to right, rgb(226, 52, 43) 0%, rgb(255, 106, 28) 100%)' }}>
-                <Shield className="w-8 h-8 text-white" />
-              </div>
-              <h3 className="text-xl font-semibold mb-4" style={{ color: '#1c1b1b' }}>Protected & Dependable</h3>
-              <p className="text-gray-600">
-                Developed with business-level security standards. Every form response is encrypted and secured with comprehensive access management.
-              </p>
-            </div>
-
-            {/* Feature 5 */}
-            <div className="text-center p-8 rounded-2xl bg-gradient-to-br from-orange-50 to-red-50 border border-orange-100">
-              <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6" style={{ backgroundImage: 'linear-gradient(to right, rgb(226, 52, 43) 0%, rgb(255, 106, 28) 100%)' }}>
-                <Users className="w-8 h-8 text-white" />
-              </div>
-              <h3 className="text-xl font-semibold mb-4" style={{ color: '#1c1b1b' }}>Collaborative Workspace</h3>
-              <p className="text-gray-600">
-                Distribute forms among teammates, work together on layouts, and handle responses collectively in one unified dashboard.
-              </p>
-            </div>
-
-            {/* Feature 6 */}
-            <div className="text-center p-8 rounded-2xl bg-gradient-to-br from-orange-50 to-red-50 border border-orange-100">
-              <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6" style={{ backgroundImage: 'linear-gradient(to right, rgb(226, 52, 43) 0%, rgb(255, 106, 28) 100%)' }}>
-                <ArrowRight className="w-8 h-8 text-white" />
-              </div>
-              <h3 className="text-xl font-semibold mb-4" style={{ color: '#1c1b1b' }}>Seamless Connectivity</h3>
-              <p className="text-gray-600">
-                Place forms everywhere, connect with current applications, and download information in various formats for smooth process flow.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
+       <FeaturesSection />
 
       {/* CTA Section - Only show when user is not logged in */}
       {!isLoggedIn && (
-      <div className="px-6 py-20">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl font-bold mb-6" style={{ color: '#1c1b1b' }}>
-            Ready to Revolutionize Form Building?
-          </h2>
-          <p className="text-xl text-gray-600 mb-8">
-            Join thousands who are already building forms faster and easier with AI.
-          </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4">
-            <Link
-              href="/signup"
-              className="text-white px-8 py-4 rounded-xl font-semibold text-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-200 flex items-center space-x-2"
-              style={{ backgroundImage: 'linear-gradient(to right, rgb(226, 52, 43) 0%, rgb(255, 106, 28) 100%)' }}
-            >
-              <span>Try It Free</span>
-              <ArrowRight className="w-5 h-5" />
-            </Link>
-            <Link
-              href="/login"
-              className="border-2 border-gray-300 text-gray-700 px-8 py-4 rounded-xl font-semibold text-lg hover:border-orange-600 hover:text-orange-600 transition-all duration-200"
-            >
-              Sign In
-            </Link>
-          </div>
-        </div>
-      </div>
+    <div className="px-6 py-4">
+  <div className="max-w-4xl mx-auto text-center">
+    <h2 className="text-3xl sm:text-4xl font-bold mb-6" style={{ color: '#1c1b1b' }}>
+      Ready to Revolutionize Form Building?
+    </h2>
+    <p className="text-lg sm:text-xl text-gray-600 mb-10 px-4">
+      Join thousands who are already building forms faster and easier with AI.
+    </p>
+
+    <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+      <Link
+        href="/signup"
+        className="text-white px-8 py-4 rounded-[2rem] font-semibold text-base sm:text-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-200 flex items-center justify-center space-x-2 w-full sm:w-auto"
+        style={{
+          backgroundImage:
+            'linear-gradient(to right, rgb(226, 52, 43) 0%, rgb(255, 106, 28) 100%)',
+        }}
+      >
+        <span>Try It Free</span>
+        <ArrowRight className="w-5 h-5" />
+      </Link>
+
+      <Link
+        href="/login"
+        className="border-2 border-gray-300 text-gray-700 px-8 py-4 rounded-[2rem] font-semibold text-base sm:text-lg hover:border-orange-600 hover:text-orange-600 transition-all duration-200 w-full sm:w-auto text-center"
+      >
+        Sign In
+      </Link>
+    </div>
+  </div>
+</div>
+
       )}
 
       {/* Footer */}
