@@ -4,9 +4,8 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import "./globals.css";
-import HeroSection from "@/components/FeatureSection";
 import StatsSection from '@/components/StatsSection';
-import { Sparkles, FileText, Zap, Shield, Users, ArrowRight, LogOut,Send } from 'lucide-react';
+import { Sparkles, FileText, Zap, ArrowRight, LogOut,Send } from 'lucide-react';
 import FeaturesSection from '@/components/FeatureSection';
 
 export default function HomePage() {

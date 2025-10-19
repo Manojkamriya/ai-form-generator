@@ -48,12 +48,10 @@ export default function FormPage() {
     formState: { errors },
   } = useForm<FormData>();
 
-  // Fetch form schema
-  useEffect(() => {
-    fetchFormSchema();
-  }, [formId]);
-
-  const fetchFormSchema = async () => {
+ 
+ 
+useEffect(() => {
+   const fetchFormSchema = async () => {
     try {
       setIsLoading(true);
       const response = await api.get(`/form/${formId}`);
@@ -65,6 +63,9 @@ export default function FormPage() {
       setIsLoading(false);
     }
   };
+
+    fetchFormSchema();
+}, [formId]);
 
   const handleFileChange = (fieldName: string, event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
