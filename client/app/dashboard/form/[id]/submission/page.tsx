@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
@@ -20,7 +19,7 @@ interface DataWithResponses {
 export default function SubmissionsPage() {
   const params = useParams();
   const formId = params.id as string;
-  
+
   const [submissions, setSubmissions] = useState<Submission[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
@@ -31,10 +30,10 @@ export default function SubmissionsPage() {
     try {
       setIsLoading(true);
       const response = await api.get(`/submission/${formId}`);
-      
+
       const processedSubmissions = response.data.submissions.map((submission: Submission) => {
         let parsedData = submission.data;
-        
+
         if (parsedData && typeof parsedData === 'object' && 'responses' in parsedData) {
           const responsesValue = (parsedData as DataWithResponses).responses;
           if (typeof responsesValue === 'string') {
@@ -46,21 +45,20 @@ export default function SubmissionsPage() {
           } else {
             parsedData = responsesValue ?? {};
           }
-        }
-        else if (typeof parsedData === 'string') {
+        } else if (typeof parsedData === 'string') {
           try {
             parsedData = JSON.parse(parsedData);
           } catch {
             parsedData = parsedData;
           }
         }
-        
+
         return {
           ...submission,
           data: parsedData,
         };
       });
-      
+
       setSubmissions(processedSubmissions);
     } catch (err: unknown) {
       const error = err as { response?: { data?: { message?: string } } };
@@ -75,7 +73,7 @@ export default function SubmissionsPage() {
       const response = await api.get(`/form/${formId}`);
       setFormTitle(response.data.form.title);
     } catch {
-      // Silently fail, form title is not critical
+      // Silently fail
     }
   }, [formId]);
 
@@ -98,7 +96,7 @@ export default function SubmissionsPage() {
     const key = `${submissionId}-${fieldName}`;
     setExpandedCells(prev => ({
       ...prev,
-      [key]: !prev[key]
+      [key]: !prev[key],
     }));
   };
 
@@ -106,12 +104,12 @@ export default function SubmissionsPage() {
     if (value === null || value === undefined || value === '') {
       return <span className="text-gray-400 italic">Not provided</span>;
     }
-    
+
     const stringValue = String(value);
     const cellKey = `${submissionId}-${fieldName}`;
     const isExpanded = expandedCells[cellKey];
     const shouldTruncate = stringValue.length > 100;
-    
+
     if (shouldTruncate && !isExpanded) {
       return (
         <div className="max-w-xs">
@@ -126,7 +124,7 @@ export default function SubmissionsPage() {
         </div>
       );
     }
-    
+
     if (shouldTruncate && isExpanded) {
       return (
         <div className="max-w-xs">
@@ -141,7 +139,7 @@ export default function SubmissionsPage() {
         </div>
       );
     }
-    
+
     return <span className="text-gray-900 break-words max-w-xs block">{stringValue}</span>;
   };
 
@@ -175,23 +173,19 @@ export default function SubmissionsPage() {
   const downloadCSV = () => {
     if (submissions.length === 0) return;
 
-    // Get all field names from first submission
     const firstSubmission = submissions[0];
     const fieldNames = typeof firstSubmission.data === 'object' && firstSubmission.data !== null
       ? Object.keys(firstSubmission.data as Record<string, string | number>)
       : ['Data'];
 
-    // Create CSV headers
     const headers = ['Submitted Date', ...fieldNames, 'Files'];
-    
-    // Create CSV rows
+
     const rows = submissions.map(submission => {
       const row = [formatDate(submission.createdAt)];
-      
+
       if (typeof submission.data === 'object' && submission.data !== null) {
         fieldNames.forEach(fieldName => {
           const value = (submission.data as Record<string, string | number>)[fieldName];
-          // Escape quotes and wrap in quotes if contains comma or newline
           const stringValue = String(value || '');
           const escapedValue = stringValue.replace(/"/g, '""');
           row.push(stringValue.includes(',') || stringValue.includes('\n') ? `"${escapedValue}"` : escapedValue);
@@ -199,25 +193,18 @@ export default function SubmissionsPage() {
       } else {
         row.push(String(submission.data || ''));
       }
-      
-      // Add files URLs
+
       const filesString = submission.files.length > 0 ? submission.files.join('; ') : 'No files';
       row.push(filesString.includes(',') ? `"${filesString}"` : filesString);
-      
+
       return row;
     });
 
-    // Combine headers and rows
-    const csvContent = [
-      headers.join(','),
-      ...rows.map(row => row.join(','))
-    ].join('\n');
-
-    // Create blob and download
+    const csvContent = [headers.join(','), ...rows.map(row => row.join(','))].join('\n');
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     const link = document.createElement('a');
     const url = URL.createObjectURL(blob);
-    
+
     link.setAttribute('href', url);
     link.setAttribute('download', `${formTitle || 'form'}-responses-${new Date().toISOString().split('T')[0]}.csv`);
     link.style.visibility = 'hidden';
@@ -228,12 +215,10 @@ export default function SubmissionsPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 py-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 mx-auto" style={{ borderColor: 'rgb(226, 52, 43)' }}></div>
-            <p className="mt-4 text-gray-600">Loading responses...</p>
-          </div>
+      <div className="min-h-screen bg-gray-50 py-8 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 mx-auto" style={{ borderColor: '#1c1b1b' }}></div>
+          <p className="mt-4 text-gray-600">Loading responses...</p>
         </div>
       </div>
     );
@@ -241,11 +226,9 @@ export default function SubmissionsPage() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gray-50 py-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md">
-            {error}
-          </div>
+      <div className="min-h-screen bg-gray-50 py-8 flex items-center justify-center">
+        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md">
+          {error}
         </div>
       </div>
     );
@@ -255,41 +238,30 @@ export default function SubmissionsPage() {
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="mb-8">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold" style={{ color: '#1c1b1b' }}>
-                {formTitle ? `${formTitle} - Responses` : 'Form Responses'}
-              </h1>
-              <p className="mt-2 text-gray-600">
-                View all responses and uploaded files for this form
-              </p>
-            </div>
-            <div className="flex items-center space-x-3">
-              {submissions.length > 0 && (
-                <button
-                  onClick={downloadCSV}
-                  className="inline-flex items-center px-4 py-2 border shadow-sm text-sm font-medium rounded-md text-white hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 transition-all"
-                  style={{ 
-                    backgroundColor: 'rgb(226, 52, 43)',
-                    borderColor: 'rgb(226, 52, 43)',
-                    '--tw-ring-color': 'rgb(226, 52, 43)'
-                  } as React.CSSProperties}
-                >
-                  <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                  </svg>
-                  Download CSV
-                </button>
-              )}
-              <Link
-                href="/dashboard"
-                className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2"
-                style={{ '--tw-ring-color': 'rgb(226, 52, 43)' } as React.CSSProperties}
+        <div className="mb-8 flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold" style={{ color: '#1c1b1b' }}>
+              {formTitle ? `${formTitle} - Responses` : 'Form Responses'}
+            </h1>
+            <p className="mt-2 text-gray-600">View all responses and uploaded files for this form</p>
+          </div>
+          <div className="flex items-center space-x-3">
+            {submissions.length > 0 && (
+              <button
+                onClick={downloadCSV}
+                className="inline-flex items-center px-4 py-2 border shadow-sm text-sm font-medium rounded-md text-white hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 transition-all"
+                style={{ backgroundColor: '#1c1b1b', borderColor: '#1c1b1b' }}
               >
-                ← Back to Dashboard
-              </Link>
-            </div>
+                Download CSV
+              </button>
+            )}
+            <Link
+              href="/dashboard"
+              className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2"
+              style={{ '--tw-ring-color': '#1c1b1b' } as React.CSSProperties}
+            >
+              ← Back to Dashboard
+            </Link>
           </div>
         </div>
 
@@ -311,7 +283,7 @@ export default function SubmissionsPage() {
                 {submissions.length} Response{submissions.length !== 1 ? 's' : ''}
               </h2>
             </div>
-            
+
             <div className="overflow-x-auto">
               <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-gray-50">
@@ -319,30 +291,27 @@ export default function SubmissionsPage() {
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Submitted
                     </th>
-                    {submissions.length > 0 && typeof submissions[0].data === 'object' && Object.keys(submissions[0].data as Record<string, string | number>).map((fieldName) => (
-                      <th key={fieldName} className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        {fieldName}
-                      </th>
-                    ))}
+                    {submissions.length > 0 && typeof submissions[0].data === 'object' &&
+                      Object.keys(submissions[0].data as Record<string, string | number>).map(fieldName => (
+                        <th key={fieldName} className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          {fieldName}
+                        </th>
+                      ))}
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Files
                     </th>
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                  {submissions.map((submission) => (
+                  {submissions.map(submission => (
                     <tr key={submission.id} className="hover:bg-gray-50">
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                         {formatDate(submission.createdAt)}
                       </td>
                       {typeof submission.data === 'object' && submission.data !== null ? (
-                        Object.keys(submission.data as Record<string, string | number>).map((fieldName) => (
+                        Object.keys(submission.data as Record<string, string | number>).map(fieldName => (
                           <td key={fieldName} className="px-6 py-4 text-sm">
-                            {renderFieldValue(
-                              (submission.data as Record<string, string | number>)[fieldName],
-                              submission.id,
-                              fieldName
-                            )}
+                            {renderFieldValue((submission.data as Record<string, string | number>)[fieldName], submission.id, fieldName)}
                           </td>
                         ))
                       ) : (
@@ -350,9 +319,7 @@ export default function SubmissionsPage() {
                           {renderFieldValue(submission.data as string, submission.id, 'data')}
                         </td>
                       )}
-                      <td className="px-6 py-4 text-sm">
-                        {renderFileLinks(submission.files)}
-                      </td>
+                      <td className="px-6 py-4 text-sm">{renderFileLinks(submission.files)}</td>
                     </tr>
                   ))}
                 </tbody>
