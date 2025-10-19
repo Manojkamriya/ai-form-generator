@@ -271,16 +271,21 @@ export default function FormPage() {
     }
   };
 
-  if (isLoading) {
+  if (!isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-8">
-        <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 mx-auto" style={{ borderColor: 'rgb(226, 52, 43)' }}></div>
-            <p className="mt-4 text-gray-600">Loading form...</p>
-          </div>
-        </div>
-      </div>
+   <div className="min-h-screen bg-white">
+  <div className="flex items-center justify-center" style={{ minHeight: 'calc(100vh - 5rem)' }}>
+    <div className="text-center pb-20">
+      <div
+        className="animate-spin rounded-full h-14 w-14 border-b-2 border-t-2 mx-auto "
+        style={{ borderColor: 'rgb(226, 52, 43)' }}
+      ></div>
+      <p className="mt-4 text-lg  text-gray-900   font-medium tracking-wide">
+        Loading form...
+      </p>
+    </div>
+  </div>
+</div>
     );
   }
 
@@ -314,12 +319,12 @@ export default function FormPage() {
           <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-8 mb-6"
                style={{ backgroundImage: 'linear-gradient(to right, rgb(226, 52, 43) 0%, rgb(255, 106, 28) 100%)' }}>
             <h1 className="text-4xl font-bold mb-4"
-                style={{ color: '#1c1b1b' }}>
+                style={{ color: 'white' }}>
               {formSchema.title}
             </h1>
             {formSchema.description && (
               <p className="text-lg leading-relaxed"
-                 style={{ color: '#1c1b1b' }}>
+                 style={{ color: 'white' }}>
                 {formSchema.description}
               </p>
             )}

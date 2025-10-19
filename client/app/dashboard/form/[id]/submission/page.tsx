@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
@@ -24,36 +25,32 @@ export default function SubmissionsPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
   const [formTitle, setFormTitle] = useState('');
+  const [expandedCells, setExpandedCells] = useState<Record<string, boolean>>({});
 
   const fetchSubmissions = useCallback(async () => {
     try {
       setIsLoading(true);
       const response = await api.get(`/submission/${formId}`);
       
-      // Parse data if it comes as a JSON string or has nested responses field
       const processedSubmissions = response.data.submissions.map((submission: Submission) => {
         let parsedData = submission.data;
         
-        // Check if data has a 'responses' field with stringified JSON
         if (parsedData && typeof parsedData === 'object' && 'responses' in parsedData) {
           const responsesValue = (parsedData as DataWithResponses).responses;
           if (typeof responsesValue === 'string') {
             try {
               parsedData = JSON.parse(responsesValue);
             } catch {
-              // eslint-disable-next-line
               parsedData = responsesValue;
             }
           } else {
             parsedData = responsesValue ?? {};
           }
         }
-        // If data itself is a string, try to parse it
         else if (typeof parsedData === 'string') {
           try {
             parsedData = JSON.parse(parsedData);
           } catch {
-            // If parsing fails, keep as is
             parsedData = parsedData;
           }
         }
@@ -82,7 +79,6 @@ export default function SubmissionsPage() {
     }
   }, [formId]);
 
-  // Fetch submissions
   useEffect(() => {
     fetchSubmissions();
     fetchFormTitle();
@@ -98,27 +94,55 @@ export default function SubmissionsPage() {
     });
   };
 
-  const renderFieldValue = (value: string | number) => {
+  const toggleCellExpansion = (submissionId: string, fieldName: string) => {
+    const key = `${submissionId}-${fieldName}`;
+    setExpandedCells(prev => ({
+      ...prev,
+      [key]: !prev[key]
+    }));
+  };
+
+  const renderFieldValue = (value: string | number, submissionId: string, fieldName: string) => {
     if (value === null || value === undefined || value === '') {
       return <span className="text-gray-400 italic">Not provided</span>;
     }
     
-    if (typeof value === 'string' && value.length > 100) {
+    const stringValue = String(value);
+    const cellKey = `${submissionId}-${fieldName}`;
+    const isExpanded = expandedCells[cellKey];
+    const shouldTruncate = stringValue.length > 100;
+    
+    if (shouldTruncate && !isExpanded) {
       return (
-        <div>
-          <span className="text-gray-900">{value.substring(0, 100)}...</span>
+        <div className="max-w-xs">
+          <span className="text-gray-900 break-words">{stringValue.substring(0, 100)}...</span>
           <button
-            onClick={() => alert(value)}
-            className="ml-2 text-sm"
+            onClick={() => toggleCellExpansion(submissionId, fieldName)}
+            className="ml-2 text-sm font-medium hover:underline"
             style={{ color: 'rgb(226, 52, 43)' }}
           >
-            View full
+            Show more
           </button>
         </div>
       );
     }
     
-    return <span className="text-gray-900">{String(value)}</span>;
+    if (shouldTruncate && isExpanded) {
+      return (
+        <div className="max-w-xs">
+          <span className="text-gray-900 break-words whitespace-pre-wrap">{stringValue}</span>
+          <button
+            onClick={() => toggleCellExpansion(submissionId, fieldName)}
+            className="ml-2 text-sm font-medium hover:underline"
+            style={{ color: 'rgb(226, 52, 43)' }}
+          >
+            Show less
+          </button>
+        </div>
+      );
+    }
+    
+    return <span className="text-gray-900 break-words max-w-xs block">{stringValue}</span>;
   };
 
   const renderFileLinks = (files: string[]) => {
@@ -134,7 +158,7 @@ export default function SubmissionsPage() {
               href={fileUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sm flex items-center"
+              className="text-sm flex items-center hover:underline"
               style={{ color: 'rgb(226, 52, 43)' }}
             >
               <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -146,6 +170,60 @@ export default function SubmissionsPage() {
         ))}
       </div>
     );
+  };
+
+  const downloadCSV = () => {
+    if (submissions.length === 0) return;
+
+    // Get all field names from first submission
+    const firstSubmission = submissions[0];
+    const fieldNames = typeof firstSubmission.data === 'object' && firstSubmission.data !== null
+      ? Object.keys(firstSubmission.data as Record<string, string | number>)
+      : ['Data'];
+
+    // Create CSV headers
+    const headers = ['Submitted Date', ...fieldNames, 'Files'];
+    
+    // Create CSV rows
+    const rows = submissions.map(submission => {
+      const row = [formatDate(submission.createdAt)];
+      
+      if (typeof submission.data === 'object' && submission.data !== null) {
+        fieldNames.forEach(fieldName => {
+          const value = (submission.data as Record<string, string | number>)[fieldName];
+          // Escape quotes and wrap in quotes if contains comma or newline
+          const stringValue = String(value || '');
+          const escapedValue = stringValue.replace(/"/g, '""');
+          row.push(stringValue.includes(',') || stringValue.includes('\n') ? `"${escapedValue}"` : escapedValue);
+        });
+      } else {
+        row.push(String(submission.data || ''));
+      }
+      
+      // Add files URLs
+      const filesString = submission.files.length > 0 ? submission.files.join('; ') : 'No files';
+      row.push(filesString.includes(',') ? `"${filesString}"` : filesString);
+      
+      return row;
+    });
+
+    // Combine headers and rows
+    const csvContent = [
+      headers.join(','),
+      ...rows.map(row => row.join(','))
+    ].join('\n');
+
+    // Create blob and download
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    
+    link.setAttribute('href', url);
+    link.setAttribute('download', `${formTitle || 'form'}-responses-${new Date().toISOString().split('T')[0]}.csv`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   if (isLoading) {
@@ -187,13 +265,31 @@ export default function SubmissionsPage() {
                 View all responses and uploaded files for this form
               </p>
             </div>
-            <Link
-              href="/dashboard"
-              className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2"
-              style={{ '--tw-ring-color': 'rgb(226, 52, 43)' } as React.CSSProperties}
-            >
-              ← Back to Dashboard
-            </Link>
+            <div className="flex items-center space-x-3">
+              {submissions.length > 0 && (
+                <button
+                  onClick={downloadCSV}
+                  className="inline-flex items-center px-4 py-2 border shadow-sm text-sm font-medium rounded-md text-white hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 transition-all"
+                  style={{ 
+                    backgroundColor: 'rgb(226, 52, 43)',
+                    borderColor: 'rgb(226, 52, 43)',
+                    '--tw-ring-color': 'rgb(226, 52, 43)'
+                  } as React.CSSProperties}
+                >
+                  <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                  Download CSV
+                </button>
+              )}
+              <Link
+                href="/dashboard"
+                className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2"
+                style={{ '--tw-ring-color': 'rgb(226, 52, 43)' } as React.CSSProperties}
+              >
+                ← Back to Dashboard
+              </Link>
+            </div>
           </div>
         </div>
 
@@ -223,7 +319,7 @@ export default function SubmissionsPage() {
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Submitted
                     </th>
-                    {submissions.length > 0 && typeof submissions[0].data === 'object' &&Object.keys(submissions[0].data as Record<string, string | number>).map((fieldName) => (
+                    {submissions.length > 0 && typeof submissions[0].data === 'object' && Object.keys(submissions[0].data as Record<string, string | number>).map((fieldName) => (
                       <th key={fieldName} className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                         {fieldName}
                       </th>
@@ -239,18 +335,19 @@ export default function SubmissionsPage() {
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                         {formatDate(submission.createdAt)}
                       </td>
-                      {/* Render fields if object, otherwise render raw string */}
                       {typeof submission.data === 'object' && submission.data !== null ? (
                         Object.keys(submission.data as Record<string, string | number>).map((fieldName) => (
                           <td key={fieldName} className="px-6 py-4 text-sm">
                             {renderFieldValue(
-                              (submission.data as Record<string, string | number>)[fieldName]
+                              (submission.data as Record<string, string | number>)[fieldName],
+                              submission.id,
+                              fieldName
                             )}
                           </td>
                         ))
                       ) : (
                         <td className="px-6 py-4 text-sm">
-                          {renderFieldValue(submission.data as string)}
+                          {renderFieldValue(submission.data as string, submission.id, 'data')}
                         </td>
                       )}
                       <td className="px-6 py-4 text-sm">

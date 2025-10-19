@@ -18,18 +18,23 @@ interface CreateFormData {
 
 const FORM_EXAMPLES = [
   {
-    title: 'Newsletter Signup',
-    prompt: 'Create a newsletter signup form with email and name',
+    title: 'Job Application',
+    prompt: 'Create a job application form with full name, email, phone number, resume upload, position applying for (dropdown), and cover letter (textarea)',
   },
   {
-    title: 'Event Registration',
-    prompt: 'Create an event registration form with full name, email, phone, number of attendees (1-10), dietary requirements (textarea), and photo ID upload',
+    title: 'Feedback Form',
+    prompt: 'Create a customer feedback form with name, email, rating (1-5 stars), feedback message, and option to upload a screenshot',
   },
   {
-    title: 'Product Inquiry',
-    prompt: 'Create a product inquiry form with product name, quantity (number), customer email, message, and product image upload',
+    title: 'Appointment Booking',
+    prompt: 'Create an appointment booking form with name, email, service type (dropdown), preferred date and time, and additional notes (textarea)',
+  },
+  {
+    title: 'Course Enrollment',
+    prompt: 'Create a course enrollment form with student name, email, course selection (dropdown), previous qualification, and ID card upload',
   },
 ];
+
 
 export default function DashboardPage() {
   const [forms, setForms] = useState<Form[]>([]);
@@ -150,102 +155,131 @@ export default function DashboardPage() {
         </div>
 
         {/* Create New Form Section */}
-        <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-4 sm:p-6 lg:p-8 mb-6 sm:mb-8">
-          <div className="flex items-center space-x-3 mb-4 sm:mb-6">
-            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center flex-shrink-0" style={{ backgroundImage: 'linear-gradient(to right, rgb(226, 52, 43) 0%, rgb(255, 106, 28) 100%)' }}>
-              <Plus className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
-            </div>
-            <h2 className="text-xl sm:text-2xl font-bold" style={{ color: '#1c1b1b' }}>Create New Form</h2>
-          </div>
-          
-          {error && (
-            <div className="mb-4 sm:mb-6 bg-red-50 border border-red-200 text-red-700 px-3 sm:px-4 py-2 sm:py-3 rounded-xl text-xs sm:text-sm">
-              {error}
-            </div>
-          )}
-          
-          {success && (
-            <div className="mb-4 sm:mb-6 px-3 sm:px-4 py-2 sm:py-3 rounded-xl text-xs sm:text-sm" style={{ backgroundColor: 'rgba(226, 52, 43, 0.1)', border: '1px solid rgba(226, 52, 43, 0.3)', color: 'rgb(226, 52, 43)' }}>
-              {success}
-            </div>
-          )}
+     <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-4 sm:p-6 lg:p-8 mb-6 sm:mb-8">
+  <div className="flex items-center space-x-3 mb-4 sm:mb-6">
+    <div
+      className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center flex-shrink-0"
+      style={{
+         backgroundImage: 'linear-gradient(to right, rgb(226, 52, 43) 0%, rgb(255, 106, 28) 100%)',
+      }}
+    >
+      <Plus className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+    </div>
+    <h2 className="text-xl sm:text-2xl font-bold" style={{ color: '#1c1b1b' }}>
+      Create New Form
+    </h2>
+  </div>
 
-          <form onSubmit={handleSubmit(onCreateForm)} className="space-y-4 sm:space-y-6">
-            <div>
-              <div className="flex items-center justify-between mb-2 sm:mb-3">
-                <label htmlFor="prompt" className="block text-sm font-semibold text-gray-700">
-                  Describe the form you want to create
-                </label>
-                <button
-                  type="button"
-                  onClick={() => setShowExamples(!showExamples)}
-                  className="inline-flex items-center space-x-1 text-xs sm:text-sm font-medium transition-colors"
-                  style={{ color: 'rgb(226, 52, 43)' }}
-                  onMouseEnter={(e) => e.currentTarget.style.color = 'rgb(200, 40, 30)'}
-                  onMouseLeave={(e) => e.currentTarget.style.color = 'rgb(226, 52, 43)'}
-                >
-                  <Lightbulb className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                  <span>{showExamples ? 'Hide' : 'Show'} Examples</span>
-                </button>
-              </div>
-              
-              {showExamples && (
-                <div className="mb-3 sm:mb-4 p-3 sm:p-4 bg-orange-50 border border-red-200 rounded-xl">
-                  <p className="text-xs sm:text-sm font-medium mb-2 sm:mb-3" style={{ color: 'rgb(226, 52, 43)' }}>Click an example to use it:</p>
-                  <div className="space-y-2">
-                    {FORM_EXAMPLES.map((example, index) => (
-                      <button
-                        key={index}
-                        type="button"
-                        onClick={() => handleExampleClick(example.prompt)}
-                        className="w-full text-left px-3 py-2 bg-white border border-red-300 rounded-lg transition-all duration-200 group"
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.backgroundColor = 'rgb(255, 237, 213)';
-                          e.currentTarget.style.borderColor = 'rgb(239, 68, 68)';
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.backgroundColor = 'white';
-                          e.currentTarget.style.borderColor = 'rgb(252, 165, 165)';
-                        }}
-                      >
-                        <p className="text-xs sm:text-sm font-semibold mb-1" style={{ color: 'rgb(226, 52, 43)' }}>{example.title}</p>
-                        <p className="text-xs" style={{ color: 'rgb(255, 106, 28)' }}>{example.prompt}</p>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
-              
-              <textarea
-                {...register('prompt', { 
-                  required: 'Please describe the form you want to create',
-                  minLength: {
-                    value: 10,
-                    message: 'Description must be at least 10 characters'
-                  }
-                })}
-                id="prompt"
-                rows={3}
-                className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-200 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:border-transparent transition-all duration-200 resize-none text-sm sm:text-base"
-                style={{ '--tw-ring-color': 'rgb(226, 52, 43)' } as React.CSSProperties}
-                placeholder="e.g., Create a contact form with fields for name, email, phone number, and message"
-              />
-              {errors.prompt && (
-                <p className="mt-2 text-xs sm:text-sm text-red-600">{errors.prompt.message}</p>
-              )}
-            </div>
-            
-            <button
-              type="submit"
-              disabled={isCreating}
-              className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 text-white px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none text-sm sm:text-base"
-              style={{ backgroundImage: 'linear-gradient(to right, rgb(226, 52, 43) 0%, rgb(255, 106, 28) 100%)' }}
-            >
-              <Plus className="w-4 h-4 sm:w-5 sm:h-5" />
-              <span>{isCreating ? 'Building...' : 'Build Form with AI'}</span>
-            </button>
-          </form>
+  {error && (
+    <div className="mb-4 sm:mb-6 bg-red-50 border border-red-200 text-red-700 px-3 sm:px-4 py-2 sm:py-3 rounded-xl text-xs sm:text-sm">
+      {error}
+    </div>
+  )}
+
+  {success && (
+    <div
+      className="mb-4 sm:mb-6 px-3 sm:px-4 py-2 sm:py-3 rounded-xl text-xs sm:text-sm"
+      style={{
+        backgroundColor: 'rgba(28, 27, 27, 0.1)',
+        border: '1px solid rgba(28, 27, 27, 0.3)',
+        color: '#1c1b1b',
+      }}
+    >
+      {success}
+    </div>
+  )}
+
+  <form onSubmit={handleSubmit(onCreateForm)} className="space-y-4 sm:space-y-6">
+    <div>
+      <div className="flex items-center justify-between mb-2 sm:mb-3">
+        <label
+          htmlFor="prompt"
+          className="block text-sm font-semibold text-gray-700"
+        >
+          Describe the form you want to create
+        </label>
+        <button
+          type="button"
+          onClick={() => setShowExamples(!showExamples)}
+          className="inline-flex items-center space-x-1 text-xs sm:text-sm font-medium transition-colors"
+          style={{ color: '#1c1b1b' }}
+          onMouseEnter={(e) => (e.currentTarget.style.color = '#000')}
+          onMouseLeave={(e) => (e.currentTarget.style.color = '#1c1b1b')}
+        >
+          <Lightbulb className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+          <span>{showExamples ? 'Hide' : 'Show'} Examples</span>
+        </button>
+      </div>
+
+      {showExamples && (
+        <div className="mb-3 sm:mb-4 p-3 sm:p-4 bg-gray-50 border border-gray-300 rounded-xl">
+          <p
+            className="text-xs sm:text-sm font-medium mb-2 sm:mb-3"
+            style={{ color: '#1c1b1b' }}
+          >
+            Click an example to use it:
+          </p>
+          <div className="space-y-2">
+            {FORM_EXAMPLES.map((example, index) => (
+              <button
+                key={index}
+                type="button"
+                onClick={() => handleExampleClick(example.prompt)}
+                className="w-full text-left px-3 py-2 bg-white border border-gray-300 rounded-lg transition-all duration-200 group"
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = '#f5f5f5';
+                  e.currentTarget.style.borderColor = '#1c1b1b';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = 'white';
+                  e.currentTarget.style.borderColor = '#d1d5db';
+                }}
+              >
+                <p className="text-xs sm:text-sm font-semibold mb-1" style={{ color: '#1c1b1b' }}>
+                  {example.title}
+                </p>
+                <p className="text-xs text-gray-600">{example.prompt}</p>
+              </button>
+            ))}
+          </div>
         </div>
+      )}
+
+      <textarea
+        {...register('prompt', {
+          required: 'Please describe the form you want to create',
+          minLength: {
+            value: 10,
+            message: 'Description must be at least 10 characters',
+          },
+        })}
+        id="prompt"
+        rows={3}
+        className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-200 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:border-transparent transition-all duration-200 resize-none text-sm sm:text-base"
+        style={{ '--tw-ring-color': '#1c1b1b' } as React.CSSProperties}
+        placeholder="e.g., Create a contact form with fields for name, email, phone number, and message"
+      />
+      {errors.prompt && (
+        <p className="mt-2 text-xs sm:text-sm text-red-600">
+          {errors.prompt.message}
+        </p>
+      )}
+    </div>
+
+    <button
+      type="submit"
+      disabled={isCreating}
+      className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 text-white px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none text-sm sm:text-base"
+      style={{
+        backgroundImage: 'linear-gradient(to right, rgb(226, 52, 43) 0%, rgb(255, 106, 28) 100%)',
+      }}
+    >
+      <Plus className="w-4 h-4 sm:w-5 sm:h-5" />
+      <span>{isCreating ? 'Building...' : 'Build Form with AI'}</span>
+    </button>
+  </form>
+</div>
+
 
         {/* Forms Grid */}
         <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">

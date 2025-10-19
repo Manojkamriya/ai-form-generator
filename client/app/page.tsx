@@ -18,11 +18,13 @@ export default function HomePage() {
     setIsLoggedIn(!!token);
   }, []);
 
-  const handleLogout = () => {
+ const handleLogout = () => {
+  if (window.confirm('Are you sure you want to logout?')) {
     localStorage.removeItem('token');
     setIsLoggedIn(false);
     router.push('/');
-  };
+  }
+};
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-red-50">
@@ -109,67 +111,55 @@ export default function HomePage() {
               </div>
 
               {/* Stats */}
-              <div className="grid grid-cols-3 gap-6 mt-12">
-                <div>
-                  <div className="text-3xl font-bold" style={{ color: 'rgb(226, 52, 43)' }}>10K+</div>
-                  <div className="text-sm text-gray-600">Forms Generated</div>
-                </div>
-                <div>
-                  <div className="text-3xl font-bold" style={{ color: 'rgb(255, 106, 28)' }}>5K+</div>
-                  <div className="text-sm text-gray-600">Happy Creators</div>
-                </div>
-                <div>
-                  <div className="text-3xl font-bold" style={{ color: 'rgb(226, 52, 43)' }}>99.9%</div>
-                  <div className="text-sm text-gray-600">Reliability</div>
-                </div>
-              </div>
+            
             </div>
 
             {/* Right Column - Visual Demo */}
             <div className="hidden lg:block">
-              <div className="bg-white rounded-2xl shadow-2xl p-8 border border-gray-100">
-                <div className="mb-6">
-                  <div className="flex items-center space-x-2 mb-4">
-                    <Sparkles className="w-5 h-5" style={{ color: 'rgb(226, 52, 43)' }} />
-                    <span className="font-semibold" style={{ color: '#1c1b1b' }}>See It In Action</span>
-                  </div>
-                  <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
-                    <p className="text-gray-700 italic">
-                      &ldquo;Build a contact form with name, email, phone, and message fields&ldquo;
-                    </p>
-                  </div>
-                </div>
-                <div className="space-y-3">
-                  <div className="rounded-lg p-3" style={{ backgroundColor: 'rgba(255, 106, 28, 0.1)', border: '1px solid rgba(226, 52, 43, 0.3)' }}>
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm font-medium text-gray-700">Full Name</span>
-                      <span className="text-xs text-gray-500">Text Field</span>
-                    </div>
-                  </div>
-                  <div className="rounded-lg p-3" style={{ backgroundColor: 'rgba(255, 106, 28, 0.1)', border: '1px solid rgba(226, 52, 43, 0.3)' }}>
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm font-medium text-gray-700">Email Address</span>
-                      <span className="text-xs text-gray-500">Email Field</span>
-                    </div>
-                  </div>
-                  <div className="rounded-lg p-3" style={{ backgroundColor: 'rgba(255, 106, 28, 0.1)', border: '1px solid rgba(226, 52, 43, 0.3)' }}>
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm font-medium text-gray-700">Phone Number</span>
-                      <span className="text-xs text-gray-500">Phone Field</span>
-                    </div>
-                  </div>
-                  <div className="rounded-lg p-3" style={{ backgroundColor: 'rgba(255, 106, 28, 0.1)', border: '1px solid rgba(226, 52, 43, 0.3)' }}>
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm font-medium text-gray-700">Message</span>
-                      <span className="text-xs text-gray-500">Text Area</span>
-                    </div>
-                  </div>
-                </div>
-                <div className="mt-6 flex items-center justify-center space-x-2 text-sm" style={{ color: 'rgb(226, 52, 43)' }}>
-                  <Zap className="w-4 h-4" />
-                  <span className="font-medium">Built in 2 seconds</span>
-                </div>
-              </div>
+             <div className="bg-transparent rounded-2xl  p-8 border border-gray-100 hover:shadow-2xl transition-all duration-300">
+  <div className="mb-8">
+    <div className="flex items-center space-x-2 mb-4">
+      <Sparkles className="w-5 h-5" style={{ color: 'rgb(226, 52, 43)' }} />
+      <span className="font-semibold text-lg" style={{ color: '#1a1a1a' }}>See It In Action</span>
+    </div>
+    <div className=" from-gray-50 to-white rounded-xl p-5 bg-transparent">
+      <p className="text-gray-700 italic leading-relaxed">
+        &ldquo;Build a contact form with name, email, phone, and message fields.&rdquo;
+      </p>
+    </div>
+  </div>
+
+  <div className="space-y-3">
+    {[
+      { label: 'Full Name', type: 'Text Field' },
+      { label: 'Email Address', type: 'Email Field' },
+      { label: 'Phone Number', type: 'Phone Field' },
+      { label: 'Message', type: 'Text Area' },
+    ].map((item, idx) => (
+      <div
+        key={idx}
+        className="rounded-xl p-4 flex items-center justify-between bg-gradient-to-r from-orange-50 to-white border border-orange-100 hover:border-orange-300 transition-all duration-200"
+      >
+        <span className="text-sm font-medium text-gray-800">{item.label}</span>
+        <span className="text-xs text-gray-500 bg-white px-2 py-0.5 rounded-md border border-gray-200">
+          {item.type}
+        </span>
+      </div>
+    ))}
+  </div>
+
+  <div className="mt-8 flex items-center justify-center gap-2 text-sm text-gray-800">
+    <div
+      className="p-2 rounded-full bg-gradient-to-r from-[rgb(226,52,43)] to-[rgb(255,106,28)] text-white"
+    >
+      <Zap className="w-4 h-4" />
+    </div>
+    <span className="font-medium text-gray-800">
+      Built in <span className="text-[rgb(226,52,43)]">2 seconds</span>
+    </span>
+  </div>
+</div>
+
             </div>
           </div>
         </div>
