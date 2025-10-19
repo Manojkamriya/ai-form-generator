@@ -265,68 +265,89 @@ export default function SubmissionsPage() {
           </div>
         </div>
 
-        {/* Submissions Table */}
-        {submissions.length === 0 ? (
-          <div className="bg-white rounded-lg shadow p-12 text-center">
-            <div className="text-gray-400 mb-4">
-              <svg className="mx-auto h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-              </svg>
-            </div>
-            <h3 className="text-lg font-medium text-gray-900 mb-2">No responses yet</h3>
-            <p className="text-gray-600">Begin gathering responses by sharing your form!</p>
-          </div>
-        ) : (
-          <div className="bg-white rounded-lg shadow overflow-hidden">
-            <div className="px-6 py-4 border-b border-gray-200">
-              <h2 className="text-lg font-medium text-gray-900">
-                {submissions.length} Response{submissions.length !== 1 ? 's' : ''}
-              </h2>
-            </div>
-
-            <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Submitted
-                    </th>
-                    {submissions.length > 0 && typeof submissions[0].data === 'object' &&
-                      Object.keys(submissions[0].data as Record<string, string | number>).map(fieldName => (
-                        <th key={fieldName} className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          {fieldName}
-                        </th>
-                      ))}
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Files
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
-                  {submissions.map(submission => (
-                    <tr key={submission.id} className="hover:bg-gray-50">
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {formatDate(submission.createdAt)}
-                      </td>
-                      {typeof submission.data === 'object' && submission.data !== null ? (
-                        Object.keys(submission.data as Record<string, string | number>).map(fieldName => (
-                          <td key={fieldName} className="px-6 py-4 text-sm">
-                            {renderFieldValue((submission.data as Record<string, string | number>)[fieldName], submission.id, fieldName)}
-                          </td>
-                        ))
-                      ) : (
-                        <td className="px-6 py-4 text-sm">
-                          {renderFieldValue(submission.data as string, submission.id, 'data')}
-                        </td>
-                      )}
-                      <td className="px-6 py-4 text-sm">{renderFileLinks(submission.files)}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        )}
+   {submissions.length === 0 ? (
+  <div className="bg-white rounded-lg shadow p-12 text-center">
+    <div className="text-gray-400 mb-4">
+      <svg className="mx-auto h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+      </svg>
+    </div>
+    <h3 className="text-lg font-medium text-gray-900 mb-2">No responses yet</h3>
+    <p className="text-gray-600">Begin gathering responses by sharing your form!</p>
+  </div>
+) : (
+  <div className="bg-white rounded-lg shadow overflow-hidden">
+    <div className="px-6 py-4 border-b border-gray-200">
+      <h2 className="text-lg font-medium text-gray-900">
+        {submissions.length} Response{submissions.length !== 1 ? 's' : ''}
+      </h2>
+    </div>
+    {/* Scrollable table container with simple grey scrollbar */}
+    <div 
+      className="overflow-x-auto"
+      style={{
+        scrollbarWidth: 'thin',
+        scrollbarColor: '#d1d5db #f3f4f6'
+      }}
+    >
+      <style jsx>{`
+        div::-webkit-scrollbar {
+          height: 8px;
+        }
+        div::-webkit-scrollbar-track {
+          background: #f3f4f6;
+          border-radius: 4px;
+        }
+        div::-webkit-scrollbar-thumb {
+          background: #d1d5db;
+          border-radius: 4px;
+        }
+        div::-webkit-scrollbar-thumb:hover {
+          background: #9ca3af;
+        }
+      `}</style>
+      <table className="min-w-full divide-y divide-gray-200">
+        <thead className="bg-gray-50 sticky top-0 z-10">
+          <tr>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Submitted
+            </th>
+            {submissions.length > 0 && typeof submissions[0].data === 'object' &&
+              Object.keys(submissions[0].data as Record<string, string | number>).map(fieldName => (
+                <th key={fieldName} className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  {fieldName}
+                </th>
+              ))}
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Files
+            </th>
+          </tr>
+        </thead>
+        <tbody className="bg-white divide-y divide-gray-200">
+          {submissions.map(submission => (
+            <tr key={submission.id} className="hover:bg-gray-50">
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                {formatDate(submission.createdAt)}
+              </td>
+              {typeof submission.data === 'object' && submission.data !== null ? (
+                Object.keys(submission.data as Record<string, string | number>).map(fieldName => (
+                  <td key={fieldName} className="px-6 py-4 text-sm">
+                    {renderFieldValue((submission.data as Record<string, string | number>)[fieldName], submission.id, fieldName)}
+                  </td>
+                ))
+              ) : (
+                <td className="px-6 py-4 text-sm">
+                  {renderFieldValue(submission.data as string, submission.id, 'data')}
+                </td>
+              )}
+              <td className="px-6 py-4 text-sm">{renderFileLinks(submission.files)}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </div>
+)}
       </div>
     </div>
   );

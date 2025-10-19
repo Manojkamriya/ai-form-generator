@@ -1,5 +1,5 @@
 'use client';
-
+import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
@@ -42,7 +42,7 @@ export default function DashboardPage() {
   const [isCreating, setIsCreating] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-
+const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -101,7 +101,7 @@ export default function DashboardPage() {
       // Reset form and show success message
       reset();
       setSuccess('Form created successfully!');
-      
+       router.push(`/dashboard/form/${newForm.id}`);
       // Clear success message after 3 seconds
       setTimeout(() => setSuccess(''), 3000);
     } catch (err: unknown) {

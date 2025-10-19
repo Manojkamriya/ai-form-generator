@@ -272,7 +272,7 @@ useEffect(() => {
     }
   };
 
-  if (!isLoading) {
+  if (isLoading) {
     return (
    <div className="min-h-screen bg-white">
   <div className="flex items-center justify-center" style={{ minHeight: 'calc(100vh - 5rem)' }}>
@@ -377,42 +377,57 @@ useEffect(() => {
 
         {/* Form */}
         <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-8">
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
-            {formSchema.fields.map((field) => (
-              <div key={field.name} className="space-y-3">
-                <label
-                  htmlFor={field.name}
-                  className="block text-lg font-semibold text-gray-900"
-                >
-                  {field.label}
-                  {field.required && (
-                    <span className="text-red-500 ml-2">*</span>
-                  )}
-                </label>
+  <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+    {formSchema.fields.map((field) => (
+      <div key={field.name} className="space-y-3">
+        <label
+          htmlFor={field.name}
+          className="block text-lg font-semibold text-gray-900"
+        >
+          {field.label}
+          {field.required && (
+            <span className="text-red-500 ml-2">*</span>
+          )}
+        </label>
 
-                <div>{renderField(field)}</div>
+        <div>{renderField(field)}</div>
 
-                {errors[field.name] && (
-                  <p className="text-sm text-red-600 mt-2">
-                    {errors[field.name]?.message}
-                  </p>
-                )}
-              </div>
-            ))}
+        {errors[field.name] && (
+          <p className="text-sm text-red-600 mt-2">
+            {errors[field.name]?.message}
+          </p>
+        )}
+      </div>
+    ))}
 
-            <div className="pt-6">
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className="w-full text-white py-4 px-6 rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center space-x-3"
-                style={{ backgroundImage: 'linear-gradient(to right, rgb(226, 52, 43) 0%, rgb(255, 106, 28) 100%)' }}
-              >
-                <Send className="w-5 h-5" />
-                <span>{isSubmitting ? 'Sending...' : 'Send Response'}</span>
-              </button>
-            </div>
-          </form>
-        </div>
+    {/* Buttons */}
+  <div className="pt-6 flex flex-col sm:flex-row sm:space-x-4 space-y-4 sm:space-y-0">
+  {/* Submit Button */}
+  <button
+    type="submit"
+    disabled={isSubmitting}
+    className="flex-1 text-white rounded-[2rem] py-4 px-6 rounded-2xl font-semibold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-3"
+    style={{ backgroundImage: 'linear-gradient(to right, rgb(226, 52, 43) 0%, rgb(255, 106, 28) 100%)' }}
+  >
+    <Send className="w-5 h-5" />
+    <span>{isSubmitting ? 'Sending...' : 'Send Response'}</span>
+  </button>
+
+  {/* Clear Fields Button */}
+  <button
+    type="button"
+    onClick={() => reset()}
+    className="flex-1 text-gray-100 rounded-[2rem] py-4 px-6 rounded-2xl font-semibold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center"
+    style={{ backgroundColor: '#1c1b1b' }}
+  >
+    Clear Fields
+  </button>
+</div>
+
+
+  </form>
+</div>
+
       </div>
     </div>
   );

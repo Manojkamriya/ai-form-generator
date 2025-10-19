@@ -16,7 +16,7 @@ export default function StatsSection() {
   const { ref, inView } = useInView({ triggerOnce: false, threshold: 0.3 });
 
   return (
-    <div ref={ref} className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mt-8 mb-8 sm:mt-8 sm:mb-8">
+    <div ref={ref} className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mt-8 mb-8 sm:mt-8 sm:mb-8 p-4">
       {stats.map((stat, index) => {
         const Icon = stat.icon;
         return (
